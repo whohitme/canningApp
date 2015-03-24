@@ -1,0 +1,13 @@
+{
+  "name": "canningApp",
+  "private": "true",
+  "devDependencies": {
+    "ionic": "driftyco/ionic-bower#1.0.0-beta.14"
+  },
+  "resolutions": {
+    "angular": ">= 1.0.8"
+  },
+  "dependencies": {
+    "angular-audio": "~1.6.2"
+  }
+}

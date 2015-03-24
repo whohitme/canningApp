@@ -1,0 +1,7 @@
+[{"food":"apple","pack":"hot","jar":"pint","e1":6,"e2":10,"e3":15,"image":"img/apple.jpg","type":"fruit"},
+{"food":"orange","pack":"raw","jar":"quart","e1":6,"e2":10,"e3":15,"image":"img/orange.jpg","type":"fruit"},
+{"food":"carrot","pack":"raw","jar":"pint","e1":6,"e2":10,"e3":15,"image":"img/carrot.jpg","type":"vege"},
+{"food":"potato","pack":"hot","jar":"quart","e1":6,"e2":10,"e3":15,"image":"img/potato.jpg","type":"vege"},
+{"food":"fish","pack":"raw","jar":"pint","e1":6,"e2":10,"e3":15,"image":"img/fish.jpg","type":"meat"},
+{"food":"deer","pack":"hot","jar":"quart","e1":6,"e2":10,"e3":15,"image":"img/deer.jpg","type":"meat"}
+]

@@ -1,0 +1,41 @@
+<ion-view title="Checklist" hide-back-button="true" cache-view="false">
+	<ion-nav-buttons side="right">
+      <a href="#/home"><button class="button button-icon icon ion-home">
+      </button></a>
+    </ion-nav-buttons>
+  <ion-content class="padding">
+    <p>{{foodType}}</p>
+    <h2><timer countdown="1" interval="1000" finish-callback="callbackTimer.finished()">{{mminutes}}:{{sseconds}}</timer></h2>
+    <ul class="list">
+      <li class="item item-checkbox">
+         <label class="checkbox">
+           <input type="checkbox" ng-model="check1" >
+         </label>
+         First Item
+      </li>
+      <li class="item item-checkbox" >
+         <label class="checkbox">
+           <input type="checkbox" ng-model="check2" ng-disabled="!check1">
+         </label>
+         Second Item
+      </li>
+      <li class="item item-checkbox" >
+         <label class="checkbox">
+           <input type="checkbox" ng-model="check3" ng-disabled="!check2">
+         </label>
+         Third Item
+      </li>
+      <li class="item item-checkbox" >
+         <label class="checkbox">
+           <input type="checkbox" ng-model="check4" ng-disabled="!check3">
+         </label>
+         Fourth Item
+      </li>
+      <li class="item" ng-show="check4">
+        Exhaust: let steam flow 10 minutes
+      </li>
+    </ul>
+    <a class="button button-block button-large icon-left ion-checkmark button-balanced" ng-show="check4" ng-click="addTime()" ng-disabled="isRunning">Start Timer</a>
+    <p>{{callbackTimer.status}}</p>
+  </ion-content>
+</ion-view>

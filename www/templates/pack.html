@@ -1,0 +1,13 @@
+<ion-view title="What kind of pack?">
+	<ion-nav-buttons side="right">
+      <a href="#/home"><button class="button button-icon icon ion-home">
+      </button></a>
+    </ion-nav-buttons>
+  <ion-content class="padding">
+    <a class="button button-block button-assertive" href="#/elevation/hot">Hot</a>
+    <a class="button button-block button-balanced" href="#/elevation/raw">Raw</a>
+  </ion-content>
+</ion-view>
+<ion-footer-bar align-title="left" class="bar-stable padding-left">
+  <h3 class="title-left">{{itemType.toUpperCase()}}.{{foodType.toUpperCase()}}.{{pack.jar.toUpperCase()}}</h3>
+</ion-footer-bar>

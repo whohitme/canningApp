@@ -1,0 +1,17 @@
+<ion-view title="Which {{itemType}}?">
+	<ion-nav-buttons side="right">
+      <a href="#/home"><button class="button button-icon icon ion-home">
+      </button></a>
+    </ion-nav-buttons>
+  <ion-content>
+    <ion-list>
+      <ion-item class="item-thumbnail-left" ng-repeat="food in foods | filter:customFilter" type="item-text-wrap" href="#/jar/{{food.food}}">
+        <img ng-src="{{food.image}}">
+        <h2>{{food.food.toUpperCase()}}</h2>
+      </ion-item>
+    </ion-list>
+  </ion-content>
+</ion-view>
+<ion-footer-bar align-title="left" class="bar-stable padding-left">
+	<h3 class="title-left">{{itemType.toUpperCase()}}</h3>
+</ion-footer-bar>
