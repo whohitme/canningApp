@@ -10,13 +10,13 @@
          <label class="checkbox">
            <input type="checkbox" ng-model="check1" >
          </label>
-         Place weight or close petcock
+         Remove from heat, wait
       </li>
       <li class="item item-checkbox" >
          <label class="checkbox">
            <input type="checkbox" ng-model="check2" ng-disabled="!check1">
          </label>
-         Let pressure build
+         When fully depressurized, remove weight or open petcock
       </li>
     </ul>
     <a class="button button-block button-energized" ng-model="ptimer" ng-disabled="!check2" href="#/timer/3">Next</a>

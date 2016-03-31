@@ -1,0 +1,12 @@
+<ion-view title="Which jar size?">
+	<ion-nav-buttons side="right">
+      <a href="#/home"><button class="button button-icon icon ion-home">
+      </button></a>
+    </ion-nav-buttons>
+  <ion-content class="padding">
+    <a class="button button-block button-balanced" ng-model="pint" ng-show="{{pint}}" href="#/pack/pint">Pint</a>
+    <a class="button button-block button-energized" ng-model="quart" ng-show="{{quart}}" href="#/pack/quart">Quart</a>
+    <h1 ng-show="!pint">Pint is not available for {{food}}.</h1>
+    <h1 ng-show="!quart">Quart is not available for {{food}}.</h1>
+  </ion-content>
+</ion-view>

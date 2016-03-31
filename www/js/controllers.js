@@ -4,7 +4,7 @@ angular.module('starter.controllers', [])
 
 .controller('FoodsCtrl', function($scope, $stateParams, Selection, Json) {
   Selection.init();
-  $scope.itemType = $stateParams.type;
+  //$scope.itemType = $stateParams.type;
   $scope.customFilter = {};
   Json.get('canning.json').then(function(data) {
      $scope.foods = data.canning.simple;
@@ -14,11 +14,11 @@ angular.module('starter.controllers', [])
 })
 
 .controller('JarCtrl', function($scope, $stateParams, Selection, Json) {
-  $scope.jar = $stateParams;
+  $scope.food = $stateParams.food;
   Selection.add($stateParams.food,1);
   //check which jar sizes are used for the food chosen
   var myJar = Json.find($stateParams.food,'simple');
-  //alert(myJar.jar);
+  Selection.add(myJar.id, 6);
   switch (myJar.jar) {
     case 'both':
       $scope.pint = true;
@@ -36,7 +36,6 @@ angular.module('starter.controllers', [])
 })
 
 .controller('PackCtrl', function($scope, $stateParams, Selection, Json) {
-  $scope.pack = $stateParams;
   $scope.foodType = Selection.get(1);
   Selection.add($stateParams.jar,2);
   var myPack = Json.find($scope.foodType,'simple');
@@ -57,9 +56,7 @@ angular.module('starter.controllers', [])
 })
 
 .controller('CanningCtrl', function($scope, $stateParams, Selection, Json) {
-  $scope.canning = $stateParams;
   $scope.foodType = Selection.get(1);
-  $scope.jarType = Selection.get(2);
   Selection.add($stateParams.pack,3);
   var myCan = Json.find($scope.foodType,'simple');
   switch (myCan.can) {
@@ -76,16 +73,16 @@ angular.module('starter.controllers', [])
   }
 })
 
-.controller('ElevationCtrl', function($scope, $stateParams, Selection) {
-  $scope.elevation = $stateParams;
+.controller('ElevationCtrl', function($stateParams, Selection) {
+  /*$scope.elevation = $stateParams;
   $scope.foodType = Selection.get(1);
   $scope.jarType = Selection.get(2);
-  $scope.packType = Selection.get(3);
+  $scope.packType = Selection.get(3);*/
   Selection.add($stateParams.canning,4);
 })
 
 .controller('PrecheckCtrl', function($scope, $stateParams, Selection) {
-  $scope.precheck = $stateParams;
+  //$scope.precheck = $stateParams;
   $scope.foodType = Selection.get(1);
   $scope.jarType = Selection.get(2);
   $scope.packType = Selection.get(3);
@@ -117,6 +114,7 @@ angular.module('starter.controllers', [])
   $scope.foodType = Selection.get(1);
   $scope.jarType = Selection.get(2);
   $scope.packType = Selection.get(3);
+  $scope.canType = Selection.get(4);
   /*$scope.goNext = function(){
     $state.go('ptimer1');
   }*/
@@ -164,8 +162,10 @@ angular.module('starter.controllers', [])
 
 .controller('TimerCtrl', function($scope, Selection, Json, $timeout, $stateParams, ngAudio) {
   var chosen = Selection.all();
-  $scope.canType = chosen[4];
-  var myNums = Json.find(chosen,chosen[4]);
+  $scope.canType = Selection.get(4);
+  $scope.myID = Selection.get(6);
+  var myNums = Json.find(chosen,$scope.canType);
+  //var myNums = [0,0];
   $scope.isRunning = false;
   $scope.timerDone = false;
   $scope.myPressure = myNums[1];
@@ -189,7 +189,7 @@ angular.module('starter.controllers', [])
       });*/
   //
   function getTimerData() {
-    if ($scope.canType == "bath") {
+    if ($scope.canType == 'bath') {
       // if using the water bath checklist
       switch (steps) {
         case '1':
@@ -223,7 +223,7 @@ angular.module('starter.controllers', [])
         case '3':
           $scope.message = "Wait for 10 minutes";
           $scope.counter = 10;
-          $scope.myState = 'bchecklist4';
+          $scope.myState = 'pchecklist4';
           break;
         case '4':
           $scope.message = "All done!";
