@@ -2,11 +2,47 @@ NG-AUDIO
 ===
 
 The Angular Audio Module
+
+Installation: `bower install angular-audio`
+
+Development Instructions
 ------
+1. Clone Git Repo
+2. Install dependencies with `npm install; bower install`;
+3. Install Gulp with `npm install -g gulp`;
+4. Run dev environment with `gulp`;
+
+Deployment
+-----
+To deploy to `gh-pages`, call `gulp deploy`;
 
 Total awesomeness for playing sounds. Project page here:
 
 ##[Angular Audio Project Page](http://danielstern.github.io/ngAudio/)
+##[Angular Audio Documentation](http://danielstern.github.io/ngAudio/#/docs)
+
+Release Notes v1.7.2
+
+- Updated Angular dependency to support 1.5.x
+
+Release Notes v1.7.1
+
+- Fixed https://github.com/danielstern/ngAudio/issues/85
+
+Release Notes v1.7.0
+
+- Add trackTime filter
+- Add disablePreload option
+- Fixed bug where performance could not be changed after sound was loaded
+- Updated bower file and dependencies to use Bower for development environment deps using devDependencies
+- Added longer song in examles
+- automate to github page deploy
+- add stuff to Readme
+
+Release Notes v1.6.2
+-------
+- add hover support
+- update gh-pages
 
 Release Notes v1.5.0
 -------

@@ -8,6 +8,7 @@
     "angular": ">= 1.0.8"
   },
   "dependencies": {
-    "angular-audio": "~1.6.2"
+    "angular-audio": "~1.6.2",
+    "ngCordova": "~0.1.24-alpha"
   }
 }

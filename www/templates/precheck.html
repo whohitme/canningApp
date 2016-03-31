@@ -4,12 +4,17 @@
       </button></a>
     </ion-nav-buttons>
   <ion-content class="padding">
-    <h2>Check:</h2>
-    <h1>{{foodType.toUpperCase()}}<br>
-    	{{jarType.toUpperCase()}}<br>
-    	{{packType.toUpperCase()}}<br>
-    	{{eType.toUpperCase()}}<br>
-    	{{precheck.canning.toUpperCase()}}</h1>
-    <a class="button button-block button-large icon ion-checkmark button-balanced" href="#/checklist"></a>
+    <h2>You want to can:</h2>
+    <h1>{{foodType.toUpperCase()}}</h1>
+    <p>in</p>
+    <h1>{{jarType.toUpperCase()}} jars</h1>
+    <p>by</p>
+    <h1>{{packType.toUpperCase()}} pack</h1>
+    <p>using</p>
+    <h1>{{canType.toUpperCase()}} method</h1>
+    <p>Your elevation is:</p>
+    <h1>{{eType.toUpperCase()}} feet</h1>
+    <br>
+    <a class="button button-block button-large icon ion-checkmark button-balanced" href="#/pchecklist1"></a>
   </ion-content>
 </ion-view>

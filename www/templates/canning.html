@@ -4,11 +4,10 @@
       </button></a>
     </ion-nav-buttons>
   <ion-content class="padding">
-    <a class="button button-block button-royal" href="#/precheck/dial">Dial Guage</a>
-    <a class="button button-block button-positive" href="#/precheck/weighted">Weighted Guage</a>
-    <a class="button button-block button-calm" href="#/precheck/bath">Water Bath</a>
+    <a class="button button-block button-royal" ng-model="dial" ng-show="{{dial}}" href="#/elevation/dial">Dial Guage</a>
+    <a class="button button-block button-positive" ng-model="weighted" ng-show="{{weighted}}" href="#/elevation/weighted">Weighted Guage</a>
+    <a class="button button-block button-calm" ng-model="bath" ng-show="{{bath}}" href="#/elevation/bath">Water Bath</a>
+    <h1 ng-show="!dial">Pressure canning is not available for {{foodType}}.</h1>
+    <h1 ng-show="!bath">Water bath is not available for {{foodType}}.</h1>
   </ion-content>
 </ion-view>
-<ion-footer-bar align-title="left" class="bar-stable padding-left">
-  <h3 class="title-left">{{itemType.toUpperCase()}}.{{foodType.toUpperCase()}}.{{jarType.toUpperCase()}}.{{packType.toUpperCase()}}.{{eType.toUpperCase()}}</h3>
-</ion-footer-bar>

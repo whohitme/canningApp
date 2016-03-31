@@ -1,5 +1,5 @@
 /**
- * angular-timer - v1.3.1 - 2015-03-13 8:46 AM
+ * angular-timer - v1.3.3 - 2015-05-28 9:05 AM
  * https://github.com/siddii/angular-timer
  *
  * Copyright (c) 2015 Siddique Hameed
@@ -18,9 +18,10 @@ var timerModule = angular.module('timer', [])
         finishCallback: '&finishCallback',
         autoStart: '&autoStart',
         language: '@?',
+        fallback: '@?',
         maxTimeUnit: '='
       },
-      controller: ['$scope', '$element', '$attrs', '$timeout', 'I18nService', '$interpolate', function ($scope, $element, $attrs, $timeout, I18nService, $interpolate) {
+      controller: ['$scope', '$element', '$attrs', '$timeout', 'I18nService', '$interpolate', 'progressBarService', function ($scope, $element, $attrs, $timeout, I18nService, $interpolate, progressBarService) {
 
         // Checking for trim function since IE8 doesn't have it
         // If not a function, create tirm with RegEx to mimic native trim
@@ -37,15 +38,22 @@ var timerModule = angular.module('timer', [])
 
 
         $scope.language = $scope.language || 'en';
+        $scope.fallback = $scope.fallback || 'en';
 
         //allow to change the language of the directive while already launched
-        $scope.$watch('language', function() {
-            i18nService.init($scope.language);
+        $scope.$watch('language', function(newVal, oldVal) {
+          if(newVal !== undefined) {
+            i18nService.init(newVal, $scope.fallback);
+          }
         });
 
         //init momentJS i18n, default english
         var i18nService = new I18nService();
-        i18nService.init($scope.language);
+        i18nService.init($scope.language, $scope.fallback);
+
+        //progress bar
+        $scope.displayProgressBar = 0;
+        $scope.displayProgressActive = 'active'; //Bootstrap active effect for progress bar
 
         if ($element.html().trim().length === 0) {
           $element.append($compile('<span>' + $interpolate.startSymbol() + 'millis' + $interpolate.endSymbol() + '</span>')($scope));
@@ -90,6 +98,18 @@ var timerModule = angular.module('timer', [])
         }
 
         $scope.$watch('startTimeAttr', function(newValue, oldValue) {
+          if (newValue !== oldValue && $scope.isRunning) {
+            $scope.start();
+          }
+        });
+
+        $scope.$watch('endTimeAttr', function(newValue, oldValue) {
+          if (newValue !== oldValue && $scope.isRunning) {
+            $scope.start();
+          }
+        });
+
+        $scope.$watch('countdownattr', function(newValue, oldValue) {
           if (newValue !== oldValue && $scope.isRunning) {
             $scope.start();
           }
@@ -259,16 +279,18 @@ var timerModule = angular.module('timer', [])
         calculateTimeUnits();
 
         var tick = function tick() {
-
+          var typeTimer = null; // countdown or endTimeAttr
           $scope.millis = moment().diff($scope.startTime);
           var adjustment = $scope.millis % 1000;
 
           if ($scope.endTimeAttr) {
+            typeTimer = $scope.endTimeAttr;
             $scope.millis = moment($scope.endTime).diff(moment());
             adjustment = $scope.interval - $scope.millis % 1000;
           }
 
           if ($scope.countdownattr) {
+            typeTimer = $scope.countdownattr;
             $scope.millis = $scope.countdown * 1000;
           }
 
@@ -300,6 +322,15 @@ var timerModule = angular.module('timer', [])
               $scope.$eval($scope.finishCallback);
             }
           }
+
+          if(typeTimer !== null){
+            //calculate progress bar
+            $scope.progressBar = progressBarService.calculateProgressBar($scope.startTime, $scope.millis, $scope.endTime, $scope.countdownattr);
+
+            if($scope.progressBar === 100){
+              $scope.displayProgressActive = ''; //No more Bootstrap active effect
+            }
+          }
         };
 
         if ($scope.autoStart === undefined || $scope.autoStart === true) {
@@ -321,10 +352,22 @@ app.factory('I18nService', function() {
     var I18nService = function() {};
 
     I18nService.prototype.language = 'en';
+    I18nService.prototype.fallback = 'en';
     I18nService.prototype.timeHumanizer = {};
 
-    I18nService.prototype.init = function init(lang){
+    I18nService.prototype.init = function init(lang, fallback) {
+        var supported_languages = humanizeDuration.getSupportedLanguages();
+
+        this.fallback = (fallback !== undefined) ? fallback : 'en';
+        if (supported_languages.indexOf(fallback) === -1) {
+            this.fallback = 'en';
+        }
+
         this.language = lang;
+        if (supported_languages.indexOf(lang) === -1) {
+            this.language = this.fallback;
+        }
+
         //moment init
         moment.locale(this.language); //@TODO maybe to remove, it should be handle by the user's application itself, and not inside the directive
 
@@ -365,4 +408,51 @@ app.factory('I18nService', function() {
     };
 
     return I18nService;
+});
+
+var app = angular.module('timer');
+
+app.factory('progressBarService', function() {
+
+  var ProgressBarService = function() {};
+
+  /**
+   * calculate the remaining time in a progress bar in percentage
+   * @param {momentjs} startValue in seconds
+   * @param {integer} currentCountdown, where are we in the countdown
+   * @param {integer} remainingTime, remaining milliseconds
+   * @param {integer} endTime, end time, can be undefined
+   * @param {integer} coutdown, original coutdown value, can be undefined
+   *
+   * joke : https://www.youtube.com/watch?v=gENVB6tjq_M
+   * @return {float} 0 --> 100
+   */
+  ProgressBarService.prototype.calculateProgressBar = function calculateProgressBar(startValue, remainingTime, endTimeAttr, coutdown) {
+    var displayProgressBar = 0,
+      endTimeValue,
+      initialCountdown;
+
+    remainingTime = remainingTime / 1000; //seconds
+
+
+    if(endTimeAttr !== null){
+      endTimeValue = moment(endTimeAttr);
+      initialCountdown = endTimeValue.diff(startValue, 'seconds');
+      displayProgressBar = remainingTime * 100 / initialCountdown;
+    }
+    else {
+      displayProgressBar = remainingTime * 100 / coutdown;
+    }
+
+    displayProgressBar = 100 - displayProgressBar; //To have 0 to 100 and not 100 to 0
+    displayProgressBar = Math.round(displayProgressBar * 10) / 10; //learn more why : http://stackoverflow.com/questions/588004/is-floating-point-math-broken
+
+    if(displayProgressBar > 100){ //security
+      displayProgressBar = 100;
+    }
+
+    return displayProgressBar;
+  };
+
+  return new ProgressBarService();
 });

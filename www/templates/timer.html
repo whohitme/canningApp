@@ -1,0 +1,14 @@
+<ion-view title="Timer" hide-back-button="true">
+	<ion-nav-buttons side="right">
+      <a href="#/home"><button class="button button-icon icon ion-home">
+      </button></a>
+    </ion-nav-buttons>
+  <ion-content class="padding">
+    <h2>{{message}}</h2>
+    <h1>{{counter}}</h1>
+    <a class="button button-block button-large button-balanced" ng-click="startTimer()" ng-hide="isRunning">Start Timer</a>
+    <a class="button button-block button-large button-assertive" ng-click="resetTimer()" ng-show="isRunning" ng-hide="timerDone">Reset Timer</a>
+    <a class="button button-block button-large button-energized" ng-show="timerDone" ng-click="nextList()" href="#/{{myState}}">Next</a>
+    <h2>{{submessage}}</h2>
+  </ion-content>
+</ion-view>

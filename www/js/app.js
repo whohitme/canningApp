@@ -5,7 +5,7 @@
 // the 2nd parameter is an array of 'requires'
 // 'starter.services' is found in services.js
 // 'starter.controllers' is found in controllers.js
-angular.module('canningApp', ['ionic', 'starter.controllers', 'starter.services', 'timer', 'ngAudio'])
+angular.module('canningApp', ['ionic', 'starter.controllers', 'starter.services', 'ngCordova', 'ngAudio'])
 
 .run(function($ionicPlatform) {
   $ionicPlatform.ready(function() {
@@ -40,44 +40,70 @@ angular.module('canningApp', ['ionic', 'starter.controllers', 'starter.services'
   // Each tab has its own nav history stack:
 
   .state('home', {
-    url: '/home',      
+    url: '/home', 
+    cache: false,     
         templateUrl: 'templates/home.html',
         controller: 'HomeCtrl'    
   })
   .state('foods', {
       url: '/foods/:type',
+      cache: false,
           templateUrl: 'templates/foods.html',
           controller: 'FoodsCtrl'
     })
     .state('jar', {
       url: '/jar/:food',
+      cache: false,
       templateUrl: 'templates/jar.html',
       controller: 'JarCtrl'
     })
     .state('pack', {
       url: '/pack/:jar',
+      cache: false,
           templateUrl: 'templates/pack.html',
           controller: 'PackCtrl'
     })
-    .state('elevation', {
-      url: '/elevation/:pack',
-          templateUrl: 'templates/elevation.html',
-          controller: 'ElevationCtrl'
-    })
     .state('canning', {
-      url: '/canning/:elevation',
+      url: '/canning/:pack',
+      cache: false,
           templateUrl: 'templates/canning.html',
           controller: 'CanningCtrl'
     })
+    .state('elevation', {
+      url: '/elevation/:canning',
+      cache: false,
+          templateUrl: 'templates/elevation.html',
+          controller: 'ElevationCtrl'
+    })
     .state('precheck', {
-      url: '/precheck/:canning',
+      url: '/precheck/:elevation',
+      cache: false,
           templateUrl: 'templates/precheck.html',
           controller: 'PrecheckCtrl'
     })
-    .state('checklist', {
-      url: '/checklist',
-          templateUrl: 'templates/checklist.html',
+    .state('pchecklist1', {
+      url: '/pchecklist1',
+      cache: false,
+          templateUrl: 'templates/pchecklist1.html',
           controller: 'ChecklistCtrl'
+    })
+    .state('pchecklist2', {
+      url: '/pchecklist2',
+      cache: false,
+          templateUrl: 'templates/pchecklist2.html',
+          controller: 'ChecklistCtrl'
+    })
+    .state('pchecklist3', {
+      url: '/pchecklist3',
+      cache: false,
+          templateUrl: 'templates/pchecklist3.html',
+          controller: 'ChecklistCtrl'
+    })
+    .state('timer', {
+      url: '/timer/:steps',
+      cache: false,
+          templateUrl: 'templates/timer.html',
+          controller: 'TimerCtrl'
     });
 
   // if none of the above states are matched, use this as the fallback

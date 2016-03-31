@@ -1,0 +1,24 @@
+<ion-view title="Checklist" hide-back-button="true">
+	<ion-nav-buttons side="right">
+      <a href="#/home"><button class="button button-icon icon ion-home">
+      </button></a>
+    </ion-nav-buttons>
+  <ion-content class="padding">
+    <p>Canning {{foodType}} in {{jarType}} jars by {{packType}} pack.</p>
+    <ul class="list">
+      <li class="item item-checkbox">
+         <label class="checkbox">
+           <input type="checkbox" ng-model="check1" >
+         </label>
+         Place weight or close petcock
+      </li>
+      <li class="item item-checkbox" >
+         <label class="checkbox">
+           <input type="checkbox" ng-model="check2" ng-disabled="!check1">
+         </label>
+         Let pressure build
+      </li>
+    </ul>
+    <a class="button button-block button-energized" ng-model="ptimer" ng-disabled="!check2" href="#/timer/3">Next</a>
+  </ion-content>
+</ion-view>
