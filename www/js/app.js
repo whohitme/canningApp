@@ -99,6 +99,30 @@ angular.module('canningApp', ['ionic', 'starter.controllers', 'starter.services'
           templateUrl: 'templates/pchecklist3.html',
           controller: 'ChecklistCtrl'
     })
+    .state('pchecklist4', {
+      url: '/pchecklist4',
+      cache: false,
+          templateUrl: 'templates/pchecklist4.html',
+          controller: 'ChecklistCtrl'
+    })
+    .state('bchecklist1', {
+      url: '/bchecklist1',
+      cache: false,
+          templateUrl: 'templates/bchecklist1.html',
+          controller: 'ChecklistCtrl'
+    })
+    .state('bchecklist2', {
+      url: '/bchecklist2',
+      cache: false,
+          templateUrl: 'templates/bchecklist2.html',
+          controller: 'ChecklistCtrl'
+    })
+    .state('bchecklist3', {
+      url: '/bchecklist3',
+      cache: false,
+          templateUrl: 'templates/bchecklist3.html',
+          controller: 'ChecklistCtrl'
+    })
     .state('timer', {
       url: '/timer/:steps',
       cache: false,

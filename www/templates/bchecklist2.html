@@ -1,21 +1,21 @@
-<ion-view title="Step 3: build pressure" hide-back-button="true">
+<ion-view title="Step 3: let jars settle" hide-back-button="true">
 	<ion-nav-buttons side="right">
       <a href="#/home"><button class="button button-icon icon ion-home">
       </button></a>
     </ion-nav-buttons>
   <ion-content class="padding">
     <ul class="list">
-      <li class="item item-checkbox">
+      <li class="item item-checkbox item-text-wrap">
          <label class="checkbox">
            <input type="checkbox" ng-model="check1" >
          </label>
-         Place weight or close petcock
+         Turn heat off, remove canner from burner, if possible
       </li>
       <li class="item item-checkbox" >
          <label class="checkbox">
            <input type="checkbox" ng-model="check2" ng-disabled="!check1">
          </label>
-         Let pressure build to {{myPressure}}
+         Remove lid from canner
       </li>
     </ul>
     <a class="button button-block button-energized" ng-model="ptimer" ng-disabled="!check2" href="#/timer/2">Next</a>

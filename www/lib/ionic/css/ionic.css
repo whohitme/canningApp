@@ -2843,7 +2843,7 @@ a.subdued {
     left: 0;
     z-index: 0;
     overflow: hidden;
-    margin: 0 10px;
+    margin: 0 4px;
     min-width: 30px;
     height: 43px;
     text-align: center;
@@ -5381,7 +5381,7 @@ input[type="radio"][disabled], input[type="checkbox"][disabled], input[type="rad
   padding: 7px 7px;
   cursor: pointer; }
   .checkbox input:before, .checkbox .checkbox-icon:before {
-    border-color: #ddd; }
+    border-color: #333; }
   .checkbox input:checked:before, .checkbox input:checked + .checkbox-icon:before {
     background: #387ef5;
     border-color: #387ef5; }
@@ -5929,15 +5929,15 @@ progress {
   margin: 0;
   padding: 0 12px;
   min-width: 52px;
-  min-height: 47px;
+  min-height: 90px;
   border-width: 1px;
   border-style: solid;
   border-radius: 2px;
   vertical-align: top;
   text-align: center;
   text-overflow: ellipsis;
-  font-size: 16px;
-  line-height: 42px;
+  font-size: 20px;
+  line-height: 80px;
   cursor: pointer; }
   .button:hover {
     color: #444;

@@ -50,16 +50,18 @@ angular.module('starter.services', [])
           case 'weighted':
             var quantity = [];
             for (var i = myJson.canning.pressure.length - 1; i >= 0; i--) {
-              if (myJson.canning.pressure[i].id == food[6] && myJson.canning.pressure[i].jar == food[2]) {
-                quantity[0] = myJson.canning.pressure[i].time;
-                //find out pressure by checking elevation - under 1K is 10, above is 15
-                if (food[5] == 'e1') {
-                  quantity[1] = 10;
-                } else {
-                  quantity[1] = 15;
-                }
-                return quantity;
-              } 
+              if (myJson.canning.pressure[i].id == food[6]) {
+                if (myJson.canning.pressure[i].jar == food[2]) {
+                  quantity[0] = myJson.canning.pressure[i].time;
+                  //find out pressure by checking elevation - under 1K is 10, above is 15
+                  if (food[5] == 'e1') {
+                    quantity[1] = 10;
+                  } else {
+                    quantity[1] = 15;
+                  }
+                  return quantity;
+                } 
+              }
             }
             if (quantity.length = 0) {
                 //alert("Matching Error");
@@ -69,30 +71,32 @@ angular.module('starter.services', [])
           case 'dial':
             var quantity = [];
             for (var i = myJson.canning.pressure.length - 1; i >= 0; i--) {
-              if (myJson.canning.pressure[i].id == food[6] && myJson.canning.pressure[i].jar == food[2]) {
-                quantity[0] = myJson.canning.pressure[i].time;
-                //find out pressure by checking elevation - under 1-2k=11,2-4k=12,4-6k=13,6-8k=14
-                switch(food[5]) {
-                  case 'e1':
-                    quantity[1] = 11;
-                    break;
-                  case 'e2':
-                    quantity[1] = 11;
-                    break;
-                  case 'e3':
-                    quantity[1] = 12;
-                    break;
-                  case 'e4':
-                    quantity[1] = 12;
-                    break;
-                  case 'e5':
-                    quantity[1] = 13;
-                    break;
-                  case 'e6':
-                    quantity[1] = 14;
-                    break;
+              if (myJson.canning.pressure[i].id == food[6]) {
+                if (myJson.canning.pressure[i].jar == food[2]) {
+                  quantity[0] = myJson.canning.pressure[i].time;
+                  //find out pressure by checking elevation - under 1-2k=11,2-4k=12,4-6k=13,6-8k=14
+                  switch(food[5]) {
+                    case 'e1':
+                      quantity[1] = 11;
+                      break;
+                    case 'e2':
+                      quantity[1] = 11;
+                      break;
+                    case 'e3':
+                      quantity[1] = 12;
+                      break;
+                    case 'e4':
+                      quantity[1] = 12;
+                      break;
+                    case 'e5':
+                      quantity[1] = 13;
+                      break;
+                    case 'e6':
+                      quantity[1] = 14;
+                      break;
+                  }
+                  return quantity;
                 }
-                return quantity;
               }
             }
             /*if (quantity.length = 0) {
@@ -104,38 +108,36 @@ angular.module('starter.services', [])
             var quantity = [];
             for (var i = myJson.canning.water.length - 1; i >= 0; i--) {
               // find matching item in Json by food, jar size, and pack type
-              if (myJson.canning.water[i].id == food[6] && myJson.canning.water[i].jar == food[2]) { 
-                if (myJson.canning.water[i].pack == food[3]) {
-                  // get time from Json based on elevation
-                  switch(food[5]) {
-                    case 'e1':
-                      quantity[0] = myJson.canning.water[i].e1;
-                      break;
-                    case 'e2':
-                      quantity[0] = myJson.canning.water[i].e2;
-                      break;
-                    case 'e3':
-                      quantity[0] = myJson.canning.water[i].e3;
-                      break;
-                    case 'e4':
-                      quantity[0] = myJson.canning.water[i].e4;
-                      break;
-                    case 'e5':
-                      quantity[0] = myJson.canning.water[i].e5;
-                      break;
-                    case 'e6':
-                      quantity[0] = myJson.canning.water[i].e6;
-                      break;
+              if (myJson.canning.water[i].id == food[6]) {
+                if (myJson.canning.water[i].jar == food[2]) { 
+                  if (myJson.canning.water[i].pack == food[3]) {
+                    // get time from Json based on elevation
+                    switch(food[5]) {
+                      case 'e1':
+                        quantity[0] = myJson.canning.water[i].e1;
+                        break;
+                      case 'e2':
+                        quantity[0] = myJson.canning.water[i].e2;
+                        break;
+                      case 'e3':
+                        quantity[0] = myJson.canning.water[i].e3;
+                        break;
+                      case 'e4':
+                        quantity[0] = myJson.canning.water[i].e4;
+                        break;
+                      case 'e5':
+                        quantity[0] = myJson.canning.water[i].e5;
+                        break;
+                      case 'e6':
+                        quantity[0] = myJson.canning.water[i].e6;
+                        break;
+                    }
+                    // assign 0 because no pressure
+                    quantity[1] = 0;
+                    
                   }
-                  // assign 0 because no pressure
-                  quantity[1] = 0;
-                  
-                } else {
-                  quantity = ['error',0]
                 }
-              } else {
-                  quantity = ['error2',0]
-                }
+              }
             }
             /*if (quantity.length = 0) {
                 alert("Matching Error");
@@ -166,6 +168,12 @@ angular.module('starter.services', [])
     steps = 0;
   }
 })
+
+.filter('minutesToDateTime', [function() {
+  return function(seconds) {
+    return new Date(1970, 1, 0).setSeconds(seconds);
+  };
+}])
 
 // for media plugin : http://plugins.cordova.io/#/package/org.apache.cordova.media
 .factory('MediaSrv', function($q, $ionicPlatform, $window) {

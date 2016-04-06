@@ -4,56 +4,61 @@
       </button></a>
     </ion-nav-buttons>
   <ion-content class="padding">
-    <ul class="list">
       <li class="item item-checkbox">
          <label class="checkbox">
            <input type="checkbox" ng-model="check1" >
          </label>
          Prepare jars, lids, rings
       </li>
-      <li class="item item-checkbox item-text-wrap" >
+      <li class="item item-checkbox" >
          <label class="checkbox">
            <input type="checkbox" ng-model="check2" ng-disabled="!check1">
          </label>
-         2-3” water in canner (3-4” if fish), 140°F raw pack, 180°F hot pack
+         Keep jars hot
       </li>
-      <li class="item item-checkbox" >
+      <li class="item item-checkbox item-text-wrap">
          <label class="checkbox">
            <input type="checkbox" ng-model="check3" ng-disabled="!check2">
          </label>
-         Prepare food
+         Fill canner with water, 140°F raw pack, 180°F hot pack
       </li>
       <li class="item item-checkbox" >
          <label class="checkbox">
            <input type="checkbox" ng-model="check4" ng-disabled="!check3">
          </label>
-         Fill jars, bubble, wipe rim
+         Prepare food
       </li>
       <li class="item item-checkbox" >
          <label class="checkbox">
            <input type="checkbox" ng-model="check5" ng-disabled="!check4">
          </label>
-         Adjust lids/rings
+         Fill jars, bubble, wipe rim
       </li>
       <li class="item item-checkbox" >
          <label class="checkbox">
            <input type="checkbox" ng-model="check6" ng-disabled="!check5">
          </label>
-         Place jars in canner
+         Adjust lids/rings
       </li>
       <li class="item item-checkbox" >
          <label class="checkbox">
            <input type="checkbox" ng-model="check7" ng-disabled="!check6">
          </label>
-         Fasten lid securely on canner
+         Place jars in canner
       </li>
       <li class="item item-checkbox" >
          <label class="checkbox">
            <input type="checkbox" ng-model="check8" ng-disabled="!check7">
          </label>
+         Add water to 1-2" over jars
+      </li>
+      <li class="item item-checkbox" >
+         <label class="checkbox">
+           <input type="checkbox" ng-model="check9" ng-disabled="!check8" ng-click="goNext">
+         </label>
          Turn heat to high
       </li>
     </ul>
-    <a class="button button-block button-energized" ng-model="ptimer" ng-disabled="!check8" href="#/timer/1">Next</a>
+    <a class="button button-block button-energized" ng-model="ptimer" ng-disabled="!check9" href="#/timer/1">Next</a>
   </ion-content>
 </ion-view>

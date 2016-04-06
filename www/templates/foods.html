@@ -1,9 +1,10 @@
-<ion-view title="Choose a food below">
+<ion-view title="">
 	<ion-nav-buttons side="right">
       <a href="#/home"><button class="button button-icon icon ion-home">
       </button></a>
     </ion-nav-buttons>
   <ion-content>
+    <h3 class="padding">Choose a food below:</h3>
     <ion-list>
       <ion-item class="item-thumbnail-left item-text-wrap" ng-repeat="food in foods | filter:customFilter" type="item-text-wrap" href="#/jar/{{food.food}}">
         <img ng-src="{{food.photo}}">

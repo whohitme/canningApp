@@ -1,12 +1,13 @@
-<ion-view title="What kind of pack?">
+<ion-view title="">
 	<ion-nav-buttons side="right">
       <a href="#/home"><button class="button button-icon icon ion-home">
       </button></a>
     </ion-nav-buttons>
   <ion-content class="padding">
+    <h3>What kind of pack?</h3>
     <a class="button button-block button-assertive" ng-model="hot" ng-show="{{hot}}" href="#/canning/hot">Hot</a>
     <a class="button button-block button-balanced" ng-model="raw" ng-show="{{raw}}" href="#/canning/raw">Raw</a>
-    <h1 ng-show="!hot">Hot pack is not available for {{foodType}}.</h1>
-    <h1 ng-show="!raw">Raw pack is not available for {{foodType}}.</h1>
+    <p ng-show="!hot">Hot pack is not available for {{foodType}}.</p>
+    <p ng-show="!raw">Raw pack is not available for {{foodType}}.</p>
   </ion-content>
 </ion-view>

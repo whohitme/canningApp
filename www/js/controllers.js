@@ -17,7 +17,7 @@ angular.module('starter.controllers', [])
   $scope.food = $stateParams.food;
   Selection.add($stateParams.food,1);
   //check which jar sizes are used for the food chosen
-  var myJar = Json.find($stateParams.food,'simple');
+  var myJar = Json.find($scope.food,'simple');
   Selection.add(myJar.id, 6);
   switch (myJar.jar) {
     case 'both':
@@ -32,6 +32,9 @@ angular.module('starter.controllers', [])
       $scope.pint = false;
       $scope.quart = true;
       break;
+  }
+  if (myJar.id == 23) {
+    $scope.halfGallon = true;
   }
 })
 
@@ -87,6 +90,15 @@ angular.module('starter.controllers', [])
   $scope.jarType = Selection.get(2);
   $scope.packType = Selection.get(3);
   $scope.canType = Selection.get(4);
+  $scope.bChecklist = false;
+  $scope.pChecklist = false;
+  if ($scope.canType == 'bath') {
+    $scope.bChecklist = true;
+    $scope.canning = "boiling water canner"
+  } else {
+    $scope.pChecklist = true;
+    $scope.canning = $scope.canType + " pressure canner";
+  }
   Selection.add($stateParams.elevation,5);
   switch ($stateParams.elevation) {
     case 'e1':
@@ -110,11 +122,25 @@ angular.module('starter.controllers', [])
   }
 })
 
-.controller('ChecklistCtrl', function($scope, $filter, Selection) {
+.controller('ChecklistCtrl', function($scope, $filter, Selection, Json) {
   $scope.foodType = Selection.get(1);
   $scope.jarType = Selection.get(2);
   $scope.packType = Selection.get(3);
   $scope.canType = Selection.get(4);
+  var chosen = Selection.all();
+  var myNums = Json.find(chosen,$scope.canType);
+  $scope.myPressure = myNums[1];
+  /*$scope.myPopup = function() {
+    var nextPopup = $ionicPopup.show({
+      title:'Go to next step',
+      buttons: [
+        {text: 'Next',
+        type: 'button-positive'}]
+    });
+    nextPopup.then(function(res) {
+      console.log('Going to next timer');
+    });
+  }
   /*$scope.goNext = function(){
     $state.go('ptimer1');
   }*/
@@ -160,7 +186,7 @@ angular.module('starter.controllers', [])
   }*/
 })
 
-.controller('TimerCtrl', function($scope, Selection, Json, $timeout, $stateParams, ngAudio) {
+.controller('TimerCtrl', function($scope, Selection, Json, $timeout, $stateParams, ngAudio, $interval) {
   var chosen = Selection.all();
   $scope.canType = Selection.get(4);
   $scope.myID = Selection.get(6);
@@ -169,7 +195,9 @@ angular.module('starter.controllers', [])
   $scope.isRunning = false;
   $scope.timerDone = false;
   $scope.myPressure = myNums[1];
+  $scope.timerTitle = "Timer";
   var steps = $stateParams.steps;
+  var intervalId;
   getTimerData();
   //$scope.myState = 'home';
   // ngAudio attempt - working on emulator and android
@@ -193,14 +221,17 @@ angular.module('starter.controllers', [])
       // if using the water bath checklist
       switch (steps) {
         case '1':
-          $scope.message = "Adjust heat to maintain boil";
-          $scope.counter = myNums[0];
+          $scope.message = "Adjust heat to maintain boil for "+myNums[0]+" minutes.";
+          $scope.counter = myNums[0];//$scope.counter = myNums[0]*60;
           $scope.myState = 'bchecklist2';
+          $scope.submessage = "Reset timer if boil stops."
+          $scope.timerTitle = "Step 2: maintain boil";
           break;
         case '2':
-          $scope.message = "Wait for 5 minutes";
-          $scope.counter = 5;
+          $scope.message = "Leave jars in the canner for 5 minutes.";
+          $scope.counter = 5;//$scope.counter = 300;
           $scope.myState = 'bchecklist3';
+          $scope.timerTitle = "Step 4: wait";
           break;
         case '3':
           $scope.message = "All done!";
@@ -210,37 +241,57 @@ angular.module('starter.controllers', [])
       // if using pressure canning checklist
         switch (steps) {
         case '1':
-          $scope.message = "Exhaust:\nLet steam flow 10 minutes";
-          $scope.counter = 10;
+          $scope.message = "Let steam flow for 10 minutes.";
+          $scope.counter = 10;//$scope.counter = 600;
           $scope.myState = 'pchecklist2';
+          $scope.timerTitle = "Step 2: exhaust canner";
           break;
         case '2':
-          $scope.message = "Start timing at desired pressure: "+$scope.myPressure;
-          $scope.submessage = "Adjust heat to keep stable pressure";
-          $scope.counter = myNums[0];
+          $scope.message = "Adjust heat to keep pressure stable at "+$scope.myPressure+" for "+myNums[0]+" minutes.";
+          $scope.submessage = "Reset timer if pressure changes";
+          $scope.counter = myNums[0];//$scope.counter = myNums[0]*60;
           $scope.myState = 'pchecklist3';
+          $scope.timerTitle = "Step 4: start timing";
           break;
         case '3':
-          $scope.message = "Wait for 10 minutes";
-          $scope.counter = 10;
+          $scope.message = "Leave jars in the canner for 10 minutes.";
+          $scope.counter = 10;//$scope.counter = 600;
           $scope.myState = 'pchecklist4';
+          $scope.timerTitle = "Step 6: wait";
           break;
         case '4':
           $scope.message = "All done!";
           break;
       }
     }
+    $scope.countdown = $scope.counter;
   }
   $scope.startTimer = function() {
     $scope.isRunning = true;
-    var mytimeout = $timeout($scope.onTimeout,1000);
+    //var mytimeout = $timeout($scope.onTimeout,1000);
       /*mytimeout.then(function() {
         console.log("Timer resolved", Date.now());
       },
       function() {
         console.log("Timer rejected", Date.now());
       });*/
+    // interval timer testing
+    var startTime = new Date();
+    intervalId = $interval(function() {
+      var actualTime = new Date();
+      var myCounter = Math.floor((actualTime - startTime) / 1000);
+      $scope.countdown = $scope.counter - myCounter;
+    }, 1000);
   }
+  $scope.$watch('countdown', function(countdown) {
+    if (countdown === 0) {
+      $scope.audio.play();
+      $interval.cancel(intervalId);
+      if ($scope.message != "All done!") {
+        $scope.timerDone = true;
+      }
+    }
+  })
   $scope.onTimeout = function(){
     $scope.counter--;
     if ($scope.counter > 0) {
@@ -261,7 +312,8 @@ angular.module('starter.controllers', [])
     }
   }
   $scope.resetTimer = function() {
-    $timeout.cancel(mytimeout);
+    //$timeout.cancel(mytimeout);
+    $interval.cancel(intervalId);
     $scope.isRunning = false;
     getTimerData();
   }
