@@ -22,19 +22,12 @@ angular.module('canningApp', ['ionic', 'starter.controllers', 'starter.services'
     //Background Mode code
     //
     // Android customization
-    cordova.plugins.backgroundMode.setDefaults({ text:'Doing heavy tasks.'});
+    /*cordova.plugins.backgroundMode.setDefaults({ 
+      text:'Running...click to return',
+      title: 'OSU Canning App'});
     // Enable background mode
     cordova.plugins.backgroundMode.enable();
-
-    // Called when background mode has been activated
-    cordova.plugins.backgroundMode.onactivate = function () {
-        setTimeout(function () {
-            // Modify the currently displayed notification
-            cordova.plugins.backgroundMode.configure({
-                text:'Running in background for more than 5s now.'
-            });
-        }, 5000);
-    }
+    */
   });
 })
 
