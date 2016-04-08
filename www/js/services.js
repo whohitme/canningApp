@@ -173,10 +173,10 @@ angular.module('starter.services', [])
   return function(seconds) {
     return new Date(1970, 1, 0).setSeconds(seconds);
   };
-}])
+}]);
 
 // for media plugin : http://plugins.cordova.io/#/package/org.apache.cordova.media
-.factory('MediaSrv', function($q, $ionicPlatform, $window) {
+/*.factory('MediaSrv', function($q, $ionicPlatform, $window) {
   var service = {
     loadMedia: loadMedia,
     getStatusMessage: getStatusMessage,
@@ -238,4 +238,4 @@ angular.module('starter.services', [])
   }
 
   return service;
-});
+});*/
