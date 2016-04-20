@@ -266,13 +266,13 @@ angular.module('starter.controllers', [])
     }
     $scope.countdown = $scope.counter;
   }
-  document.addEventListener('deviceready', function() {
+  /*document.addEventListener('deviceready', function() {
     // Enable background mode
     cordova.plugins.backgroundMode.setDefaults({
       title:'OSU Canning App',
       text:'Running...click to return'});
-    cordova.plugins.backgroundMode.enable();
-    var backgroundStatus = cordova.plugins.backgroundMode.isActive();
+    cordova.plugins.backgroundMode.enable();*/
+    //var backgroundStatus = cordova.plugins.backgroundMode.isActive();
     /*cordova.plugins.backgroundMode.onactivate = function () {
       cordova.plugins.backgroundMode.configure({
                   text:' Click to return'
@@ -339,7 +339,7 @@ angular.module('starter.controllers', [])
       cordova.plugins.backgroundMode.disable();
       //$state.go('pchecklist2');
     }
-  }, false);
+  //}, false);
   /*function playAudio(url) {
     // Play the audio file at url
     var my_media = new Media(url,

@@ -3,7 +3,7 @@
       <a href="#/home"><button class="button button-icon icon ion-home">
       </button></a>
     </ion-nav-buttons>
-  <ion-content class="padding">
+  <ion-content ng-class="{'alerting':timerDone, 'padding':!timerDone}">
     <h2>{{message}}</h2>
     <div class="clock">{{countdown | minutesToDateTime | date:'mm:ss'}}</div>
     <a class="button button-block button-balanced" ng-click="startTimer()" ng-hide="isRunning">Start Timer</a>
