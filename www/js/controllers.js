@@ -1,9 +1,10 @@
 angular.module('starter.controllers', [])
 
-.controller('HomeCtrl', function($scope) {})
+.controller('HomeCtrl', function($scope, Selection) {
+  Selection.init();
+})
 
 .controller('FoodsCtrl', function($scope, $stateParams, Selection, Json) {
-  Selection.init();
   //$scope.itemType = $stateParams.type;
   $scope.customFilter = {};
   Json.get('canning.json').then(function(data) {
@@ -26,16 +27,24 @@ angular.module('starter.controllers', [])
       break;
     case 'pint':
       $scope.pint = true;
-      $scope.quart = false;
+      //$scope.quart = false;
       break;
     case 'quart':
-      $scope.pint = false;
+      //$scope.pint = false;
       $scope.quart = true;
       break;
+    case 'halfGallon':
+      $scope.pint = true;
+      $scope.quart = true;
+      $scope.halfGallon = true;
+      break;
+    case 'seafood':
+      $scope.halfPint = true;
+      $scope.pint = true;
   }
-  if (myJar.id == 23) {
+  /*if (myJar.id == 23) {
     $scope.halfGallon = true;
-  }
+  }*/
 })
 
 .controller('PackCtrl', function($scope, $stateParams, Selection, Json) {
@@ -201,7 +210,7 @@ angular.module('starter.controllers', [])
   getTimerData();
   //$scope.myState = 'home';
   // ngAudio attempt - working on emulator and android
-  $scope.audio = ngAudio.load('img/test.mp3');
+  $scope.audio = ngAudio.load('img/beep.mp3');
   // MediaSrv code
   /*var myMedia = null;
   MediaSrv.loadMedia('img/test.mp3').then(function(media) {
@@ -225,7 +234,7 @@ angular.module('starter.controllers', [])
           $scope.counter = myNums[0];//$scope.counter = myNums[0]*60;
           $scope.myState = 'bchecklist2';
           $scope.submessage = "Reset timer if boil stops."
-          $scope.timerTitle = "Step 2: maintain boil";
+          $scope.timerTitle = "Step 2: process jars";
           break;
         case '2':
           $scope.message = "Leave jars in the canner for 5 minutes.";
@@ -247,8 +256,8 @@ angular.module('starter.controllers', [])
           $scope.timerTitle = "Step 2: exhaust canner";
           break;
         case '2':
-          $scope.message = "Adjust heat to keep pressure stable at "+$scope.myPressure+" for "+myNums[0]+" minutes.";
-          $scope.submessage = "Reset timer if pressure changes";
+          $scope.message = "Adjust heat to keep pressure stable at "+$scope.myPressure+" PSI for "+myNums[0]+" minutes.";
+          $scope.submessage = "Reset timer if pressure drops below recommended level";
           $scope.counter = myNums[0];//$scope.counter = myNums[0]*60;
           $scope.myState = 'pchecklist3';
           $scope.timerTitle = "Step 4: start timing";
@@ -287,6 +296,17 @@ angular.module('starter.controllers', [])
         var actualTime = new Date();
         var myCounter = Math.floor((actualTime - startTime) / 1000);
         $scope.countdown = $scope.counter - myCounter;
+        if ($scope.countdown === 0) {
+          $scope.audio.loop = true;
+          $scope.audio.play();
+          $interval.cancel(intervalId);
+          if ($scope.message != "All done!") {
+            $scope.timerDone = true;
+          }
+          cordova.plugins.backgroundMode.configure({
+            text:'Timer is done! Return to app'
+          });
+        }
         // check to see if app has been moved to background and send time update notification
           /*if (backgroundStatus){
               cordova.plugins.backgroundMode.configure({
@@ -295,7 +315,7 @@ angular.module('starter.controllers', [])
           }*/
       }, 1000);
     }
-    $scope.$watch('countdown', function(countdown) {
+    /*$scope.$watch('countdown', function(countdown) {
       if (countdown === 0) {
         $scope.audio.play();
         $interval.cancel(intervalId);
@@ -306,7 +326,7 @@ angular.module('starter.controllers', [])
           text:'Timer is done! Return to app'
         });
       }
-    })
+    })*/
     /*$scope.onTimeout = function(){
       $scope.counter--;
       if ($scope.counter > 0) {

@@ -20,6 +20,7 @@ angular.module('starter.services', [])
     },
     init: function() {
       choose = [];
+      choose.length = 0;
     }
   }
 })

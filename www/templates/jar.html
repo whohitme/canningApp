@@ -5,10 +5,11 @@
     </ion-nav-buttons>
   <ion-content class="padding">
   <h3>Which jar size?</h3>
+    <a class="button button-block button-royal" ng-model="halfPint" ng-show="{{halfPint}}" href="#/pack/half pint">Half Pint</a>
     <a class="button button-block button-balanced" ng-model="pint" ng-show="{{pint}}" href="#/pack/pint">Pint</a>
     <a class="button button-block button-energized" ng-model="quart" ng-show="{{quart}}" href="#/pack/quart">Quart</a>
     <a class="button button-block button-royal" ng-model="halfgallon" ng-show="{{halfGallon}}" href="#/pack/half gallon">Half Gallon</a>
-    <p ng-show="!pint">Pint is not available for {{food}}.</p>
-    <p ng-show="!quart">Quart is not available for {{food}}.</p>
+    <p ng-show="!pint">Pint is not included for {{food}}.</p>
+    <p ng-show="!quart">Quart is not included for {{food}}.</p>
   </ion-content>
 </ion-view>

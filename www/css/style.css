@@ -10,6 +10,7 @@
 }
 .alerting {
 	background-color: red;
+	padding: 10px;
     -webkit-animation-name: flash; /* Chrome, Safari, Opera */
     -webkit-animation-duration: 1s; /* Chrome, Safari, Opera */
 	-webkit-animation-iteration-count: infinite; /* Chrome, Safari, Opera */

@@ -6,8 +6,8 @@
   <ion-content ng-class="{'alerting':timerDone, 'padding':!timerDone}">
     <h2>{{message}}</h2>
     <div class="clock">{{countdown | minutesToDateTime | date:'mm:ss'}}</div>
-    <a class="button button-block button-balanced" ng-click="startTimer()" ng-hide="isRunning">Start Timer</a>
-    <a class="button button-block button-assertive" ng-click="resetTimer()" ng-show="isRunning" ng-hide="timerDone">Reset Timer</a>
+    <a class="button button-block button-balanced" ng-click="startTimer()" ng-show="!isRunning && !timerDone">Start Timer</a>
+    <a class="button button-block button-assertive" ng-click="resetTimer()" ng-show="isRunning && !timerDone">Reset Timer</a>
     <a class="button button-block button-energized" ng-show="timerDone" ng-click="nextList()" href="#/{{myState}}">Next</a>
     <p>{{submessage}}</p>
   </ion-content>

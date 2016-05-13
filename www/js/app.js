@@ -29,6 +29,9 @@ angular.module('canningApp', ['ionic', 'starter.controllers', 'starter.services'
     cordova.plugins.backgroundMode.enable();
     */
   });
+  $ionicPlatform.registerBackButtonAction(function(event){
+    event.preventDefault();
+  }, 100);
 })
 
 .config(function($stateProvider, $urlRouterProvider) {
