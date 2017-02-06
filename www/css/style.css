@@ -2,8 +2,8 @@
 .clock {
 	text-align: center;
 	font-family: sans-serif;
-	font-size: 80px;
-	padding: 40px;
+	font-size: 20vw;
+	padding: 50px 0px;
 }
 .precheck {
 	text-transform: capitalize;

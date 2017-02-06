@@ -1,10 +1,11 @@
 angular.module('starter.services', [])
 
-.factory('Selection', function() {
+.factory('Selection', function($ionicPopup, $location) {
 
   // Array to store/retrieve canning choices
   // type, food, jar size, pack, elevation, and canning type
   var choose = [];
+  var alertDone = false;
 
   return {
     add: function(item,i) {
@@ -21,6 +22,40 @@ angular.module('starter.services', [])
     init: function() {
       choose = [];
       choose.length = 0;
+    },
+    alertUser: function() {
+      if (!alertDone){
+        var alertPopup = $ionicPopup.alert({
+         title: '<h5>Check volume & notifications</h5>',
+         template: '<p><i class="icon ion-android-alarm"></i>  This app uses alarm sounds to alert you when a timer is complete.</p><p><i class="icon ion-alert-circled"></i>  Allow notifications for this app so that you can be alerted when the timers are complete when the screen is off.</p>'
+       });
+
+       alertPopup.then(function(res) {
+          alertDone = true;
+         console.log('alertDone');
+       });
+      }
+      /*if (!alertDone) {
+        return true;
+      } else {
+        return false;
+      }*/
+    },
+    homeAlert: function() {
+       var confirmPopup = $ionicPopup.confirm({
+         title: 'Are you sure?',
+         template: 'Going home will reset your progress.'
+       });
+
+       confirmPopup.then(function(res) {
+         if(res) {
+            $location.path("#/home");
+           console.log('You are sure, going home');
+         } else {
+           console.log('You are not sure, staying on page');
+         }
+         return res;
+       });
     }
   }
 })
@@ -159,7 +194,24 @@ angular.module('starter.services', [])
   }
 })
 
-.factory('TimerSrv', function() {
+// checking if app is in background or foreground
+.factory('BackgroundCheck', function($ionicPlatform){
+    var service = {};
+    var inBackground = false;
+
+    $ionicPlatform.ready(function() {        
+        document.addEventListener("resume", function(){inBackground = false;}, false);
+        document.addEventListener("pause", function(){inBackground = true;}, false);
+    });
+
+    service.isActive = function(){
+        return inBackground == false;
+    }
+    return service;    
+})
+
+// I don't think I need this
+/*.factory('TimerSrv', function() {
   var steps = 0;
   function getSteps() {
     steps++;
@@ -168,11 +220,11 @@ angular.module('starter.services', [])
   function resetSteps() {
     steps = 0;
   }
-})
+})*/
 
 .filter('minutesToDateTime', [function() {
   return function(seconds) {
-    return new Date(1970, 1, 0).setSeconds(seconds);
+    return new Date(1970, 0, 0, 0).setSeconds(seconds);
   };
 }]);
 

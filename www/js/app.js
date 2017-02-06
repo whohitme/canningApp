@@ -26,8 +26,11 @@ angular.module('canningApp', ['ionic', 'starter.controllers', 'starter.services'
       text:'Running...click to return',
       title: 'OSU Canning App'});
     // Enable background mode
-    cordova.plugins.backgroundMode.enable();
-    */
+    //cordova.plugins.backgroundMode.enable();
+    cordova.plugins.notification.local.registerPermission(function (granted) {
+      showToast(granted ? 'Yes' : 'No');
+    });*/
+    
   });
   $ionicPlatform.registerBackButtonAction(function(event){
     event.preventDefault();
@@ -141,6 +144,18 @@ angular.module('canningApp', ['ionic', 'starter.controllers', 'starter.services'
       cache: false,
           templateUrl: 'templates/timer.html',
           controller: 'TimerCtrl'
+    })
+    .state('about', {
+      url: '/about',
+      cache: false,
+          templateUrl: 'templates/about.html',
+          controller: 'HomeCtrl'
+    })
+    .state('finish', {
+      url: '/finish',
+      cache: false,
+          templateUrl: 'templates/finish.html',
+          controller: 'ChecklistCtrl'
     });
 
   // if none of the above states are matched, use this as the fallback

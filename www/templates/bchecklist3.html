@@ -1,7 +1,7 @@
-<ion-view title="Step 5: finish up" hide-back-button="true">
+<ion-view title="Step 5: Finish up" hide-back-button="true">
 	<ion-nav-buttons side="right">
-      <a href="#/home"><button class="button button-icon icon ion-home">
-      </button></a>
+      <button class="button button-icon icon ion-home" ng-click="showAlert()">
+      </button>
     </ion-nav-buttons>
   <ion-content class="padding">
     <ul class="list">
@@ -41,19 +41,13 @@
          </label>
          Label jars
       </li>
-      <li class="item item-checkbox">
+      <li class="item item-checkbox" >
          <label class="checkbox">
            <input type="checkbox" ng-model="check8" ng-disabled="!check7">
          </label>
-         Store in cool, dark dry place
-      </li>
-      <li class="item item-checkbox" >
-         <label class="checkbox">
-           <input type="checkbox" ng-model="check9" ng-disabled="!check8">
-         </label>
-         Wash and dry canner, gasket and lid
+         Wash and dry canner and lid
       </li>
     </ul>
-    <a class="button button-block button-energized" ng-model="ptimer" ng-disabled="!check9" href="#/home">All Done!</a>
+    <a class="button button-block button-energized" ng-model="ptimer" ng-disabled="!check8" href="#/finish">Next</a>
   </ion-content>
 </ion-view>

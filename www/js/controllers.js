@@ -1,7 +1,9 @@
 angular.module('starter.controllers', [])
 
-.controller('HomeCtrl', function($scope, Selection) {
+.controller('HomeCtrl', function($scope, Selection, $ionicPopup) {
   Selection.init();
+  // Alert user to turn sound on and accept notifications
+  Selection.alertUser();
 })
 
 .controller('FoodsCtrl', function($scope, $stateParams, Selection, Json) {
@@ -139,6 +141,10 @@ angular.module('starter.controllers', [])
   var chosen = Selection.all();
   var myNums = Json.find(chosen,$scope.canType);
   $scope.myPressure = myNums[1];
+  // check that the user really wants to go home
+    $scope.showAlert = function() {
+      Selection.homeAlert();
+    };
   /*$scope.myPopup = function() {
     var nextPopup = $ionicPopup.show({
       title:'Go to next step',
@@ -195,7 +201,7 @@ angular.module('starter.controllers', [])
   }*/
 })
 
-.controller('TimerCtrl', function($scope, Selection, Json, $stateParams, ngAudio, $interval) {
+.controller('TimerCtrl', function($scope, Selection, Json, $stateParams, ngAudio, $interval, BackgroundCheck) {
   var chosen = Selection.all();
   $scope.canType = Selection.get(4);
   $scope.myID = Selection.get(6);
@@ -208,39 +214,28 @@ angular.module('starter.controllers', [])
   var steps = $stateParams.steps;
   var intervalId;
   getTimerData();
-  //$scope.myState = 'home';
-  // ngAudio attempt - working on emulator and android
+  
+  // ngAudio is currently working on ios and android
   $scope.audio = ngAudio.load('img/beep.mp3');
-  // MediaSrv code
-  /*var myMedia = null;
-  MediaSrv.loadMedia('img/test.mp3').then(function(media) {
-        //media.setVolume('1.0');
-        myMedia = media;
-  });*/
-  //native audio preload sound file
-      /*
-      $ionicPlatform.ready(function() {
-        $cordovaNativeAudio.preloadSimple('alarm', 'img/test.mp3')
-          .then(function(msg) {console.log(msg); })
-          .catch(function(error) {console.error(error); });
-      });*/
-  //
+  // sound for notifications
+  var sound = device.platform == 'Android' ? 'file://notification.mp3' : 'file://notification.caf';
+
   function getTimerData() {
     if ($scope.canType == 'bath') {
       // if using the water bath checklist
       switch (steps) {
         case '1':
-          $scope.message = "Adjust heat to maintain boil for "+myNums[0]+" minutes.";
-          $scope.counter = myNums[0];//$scope.counter = myNums[0]*60;
+          $scope.message = "Start timing when water boils. Adjust heat to maintain boil for "+myNums[0]+" minutes.";
+          $scope.counter = $scope.counter = myNums[0]*60;
           $scope.myState = 'bchecklist2';
-          $scope.submessage = "Reset timer if boil stops."
-          $scope.timerTitle = "Step 2: process jars";
+          $scope.submessage = "Reset timer if boiling stops."
+          $scope.timerTitle = "Step 2: Process jars";
           break;
         case '2':
           $scope.message = "Leave jars in the canner for 5 minutes.";
-          $scope.counter = 5;//$scope.counter = 300;
+          $scope.counter = $scope.counter = 300;
           $scope.myState = 'bchecklist3';
-          $scope.timerTitle = "Step 4: wait";
+          $scope.timerTitle = "Step 4: Wait";
           break;
         case '3':
           $scope.message = "All done!";
@@ -250,23 +245,23 @@ angular.module('starter.controllers', [])
       // if using pressure canning checklist
         switch (steps) {
         case '1':
-          $scope.message = "Let steam flow for 10 minutes.";
-          $scope.counter = 10;//$scope.counter = 600;
+          $scope.message = "Wait for a steady stream of steam. Let steam flow for 10 minutes.";
+          $scope.counter = $scope.counter = 10;
           $scope.myState = 'pchecklist2';
-          $scope.timerTitle = "Step 2: exhaust canner";
+          $scope.timerTitle = "Step 2: Exhaust canner";
           break;
         case '2':
           $scope.message = "Adjust heat to keep pressure stable at "+$scope.myPressure+" PSI for "+myNums[0]+" minutes.";
           $scope.submessage = "Reset timer if pressure drops below recommended level";
-          $scope.counter = myNums[0];//$scope.counter = myNums[0]*60;
+          $scope.counter = $scope.counter = myNums[0]*60;
           $scope.myState = 'pchecklist3';
-          $scope.timerTitle = "Step 4: start timing";
+          $scope.timerTitle = "Step 4: Start timing";
           break;
         case '3':
           $scope.message = "Leave jars in the canner for 10 minutes.";
-          $scope.counter = 10;//$scope.counter = 600;
+          $scope.counter = $scope.counter = 600;
           $scope.myState = 'pchecklist4';
-          $scope.timerTitle = "Step 6: wait";
+          $scope.timerTitle = "Step 6: Wait";
           break;
         case '4':
           $scope.message = "All done!";
@@ -290,30 +285,62 @@ angular.module('starter.controllers', [])
     // start timer button clicked
     $scope.startTimer = function() {
       $scope.isRunning = true;
-      // interval timer testing
+      // this is using the cordova plugin local notifications
+          var now = new Date().getTime() + 5000;
+          reminder0 = new Date(now + $scope.countdown * 1000);
+              
+          cordova.plugins.notification.local.schedule({
+            id: 1,
+            title: "Canning timer is complete",
+            text: "Continue to next step",
+            sound: sound,
+            at: reminder0,
+          });
+          
+      // interval timer working, updating ui per second
       var startTime = new Date();
       intervalId = $interval(function() {
         var actualTime = new Date();
         var myCounter = Math.floor((actualTime - startTime) / 1000);
         $scope.countdown = $scope.counter - myCounter;
-        if ($scope.countdown === 0) {
-          $scope.audio.loop = true;
-          $scope.audio.play();
-          $interval.cancel(intervalId);
-          if ($scope.message != "All done!") {
-            $scope.timerDone = true;
-          }
-          cordova.plugins.backgroundMode.configure({
-            text:'Timer is done! Return to app'
-          });
-        }
-        // check to see if app has been moved to background and send time update notification
-          /*if (backgroundStatus){
-              cordova.plugins.backgroundMode.configure({
-                  text:'$scope.countdown'
+        if ($scope.countdown < 1) {
+          $scope.countdown = 0;
+          //$scope.debugtext = BackgroundCheck.isActive();
+          if (BackgroundCheck.isActive()){
+            // app is in foreground so cancel notification and play local audio
+              cordova.plugins.notification.local.cancel(1, function() {
               });
-          }*/
+            $scope.audio.loop = true;
+            $scope.audio.play();
+          }
+          
+          $interval.cancel(intervalId);
+          $scope.timerDone = true;
+        }
       }, 1000);
+      /*
+      // listen for if the app goes to background or foreground
+      document.addEventListener("pause", onPause, false);
+      function onPause() {
+          // this is using the cordova plugin local notifications
+          var now = new Date().getTime();
+          reminder0 = new Date(now + $scope.countdown * 1000);
+              
+          cordova.plugins.notification.local.schedule({
+            id: 1,
+            title: "Canning timer is complete",
+            text: "Continue to next step",
+            sound: sound,
+            at: reminder0,
+          });
+      }
+      document.addEventListener("resume", onResume, false);
+      function onResume() {
+        cordova.plugins.notification.local.is[Scheduled|Triggered](1, function (present) {
+          cordova.plugins.notification.local.cancel(1, function() {
+          });
+        });
+      }*/
     }
     /*$scope.$watch('countdown', function(countdown) {
       if (countdown === 0) {
@@ -346,19 +373,56 @@ angular.module('starter.controllers', [])
         //
       }
     }*/
+    // clicked reset button
     $scope.resetTimer = function() {
       //$timeout.cancel(mytimeout);
+      $scope.countdown = $scope.counter;
       $interval.cancel(intervalId);
       $scope.isRunning = false;
+      cordova.plugins.notification.local.is[Scheduled|Triggered](1, function (present) {
+          cordova.plugins.notification.local.cancel(1, function() {
+              });
+        });
+      //reset the display time?
       getTimerData();
     }
+    // clicked the next button
     $scope.nextList = function() {
       //console.log("Next clicked", myState);
       //$scope.message = $scope.myState;
       $scope.audio.stop();
-      cordova.plugins.backgroundMode.disable();
+      $interval.cancel(intervalId);
+      $scope.isRunning = false;
+      cordova.plugins.notification.local.is[Scheduled|Triggered](1, function (present) {
+          cordova.plugins.notification.local.cancel(1, function() {
+              });
+        });
+      //cordova.plugins.backgroundMode.disable();
       //$state.go('pchecklist2');
     }
+    $scope.$on("$destroy",
+      function(event) {
+        $interval.cancel(intervalId);
+        cordova.plugins.notification.local.is[Scheduled|Triggered](1, function (present) {
+          cordova.plugins.notification.local.cancel(1, function() {
+              });
+        });
+      }
+    );
+    // check that the user really wants to go home
+    $scope.showAlert = function() {
+      Selection.homeAlert().then(function(result) {
+        if (result) {
+          $scope.audio.stop();
+          $interval.cancel(intervalId);
+          $scope.isRunning = false;
+          cordova.plugins.notification.local.is[Scheduled|Triggered](1, function (present) {
+              cordova.plugins.notification.local.cancel(1, function() {
+                  });
+            });
+        }
+      });
+    };
   //}, false);
   /*function playAudio(url) {
     // Play the audio file at url
