@@ -246,7 +246,7 @@ angular.module('starter.controllers', [])
         switch (steps) {
         case '1':
           $scope.message = "Wait for a steady stream of steam. Let steam flow for 10 minutes.";
-          $scope.counter = $scope.counter = 10;
+          $scope.counter = $scope.counter = 600;
           $scope.myState = 'pchecklist2';
           $scope.timerTitle = "Step 2: Exhaust canner";
           break;

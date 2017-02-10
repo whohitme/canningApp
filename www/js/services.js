@@ -27,7 +27,7 @@ angular.module('starter.services', [])
       if (!alertDone){
         var alertPopup = $ionicPopup.alert({
          title: '<h5>Check volume & notifications</h5>',
-         template: '<p><i class="icon ion-android-alarm"></i>  This app uses alarm sounds to alert you when a timer is complete.</p><p><i class="icon ion-alert-circled"></i>  Allow notifications for this app so that you can be alerted when the timers are complete when the screen is off.</p>'
+         template: '<p><i class="icon ion-android-alarm"></i>  This app uses alarm sounds to alert you when a timer is complete. <b>TURN SOUND/ALERTS UP</b></p><p><i class="icon ion-alert-circled"></i>  <b>Allow notifications</b> for this app so that you can be alerted when the timers are complete when the screen is off.</p>'
        });
 
        alertPopup.then(function(res) {
