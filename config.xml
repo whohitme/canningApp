@@ -2,10 +2,10 @@
 <widget id="com.ionicframework.canningapp320686" version="0.0.1" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
   <name>canningApp</name>
   <description>
-        An Ionic Framework and Cordova project.
+        An OSU Extension project PNW689.
     </description>
-  <author email="hi@ionicframework" href="http://ionicframework.com/">
-      Ionic Framework Team
+  <author email="stephen.ward@oregonstate.edu" href="http://extension.oregonstate.edu/eesc/">
+      Stephen Ward, developer
     </author>
   <content src="index.html"/>
   <access origin="*"/>
