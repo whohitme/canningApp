@@ -145,60 +145,6 @@ angular.module('starter.controllers', [])
     $scope.showAlert = function() {
       Selection.homeAlert();
     };
-  /*$scope.myPopup = function() {
-    var nextPopup = $ionicPopup.show({
-      title:'Go to next step',
-      buttons: [
-        {text: 'Next',
-        type: 'button-positive'}]
-    });
-    nextPopup.then(function(res) {
-      console.log('Going to next timer');
-    });
-  }
-  /*$scope.goNext = function(){
-    $state.go('ptimer1');
-  }*/
-  //$scope.buttonText = 'Start Timer';
-  //$scope.timerDone = false;
-  /*$scope.callbackTimer = {};
-  $scope.callbackTimer.status = 'Start';
-  $scope.callbackTimer.counter = false;
-  $scope.isRunning = false;
-    // add time from json to the timer once 'start timer' is clicked
-  $scope.addTime = function () {
-    //check if button clicked first or paused
-    if ($scope.callbackTimer.counter) {
-      if ($scope.isRunning) {
-        $scope.$broadcast('timer-stop');
-        $scope.buttonText = 'Start Timer';
-      } else {
-        $scope.$broadcast('timer-resume');
-        $scope.buttonText = 'Pause Timer';
-      }
-    } else {
-      $scope.$broadcast('timer-start');
-      $scope.callbackTimer.counter = true;
-      $scope.buttonText = 'Pause Timer';
-    }
-    $scope.isRunning = !$scope.isRunning;
-  }
-  // using hack right now with a counter because can't start timer at 0
-  $scope.callbackTimer.finished = function () {
-      $scope.timerDone = true;
-      $scope.callbackTimer.status = 'DONE!';
-      $scope.buttonText = 'DONE!';
-      // play alarm sound, need to add stop button
-      MediaSrv.loadMedia('img/test.mp3').then(function(media) {
-        media.setVolume('1.0');
-        media.play();
-      });
-      $state.transitionTo($state.current, $stateParams, {
-        reload: true,
-        inherit: false,
-        notify: true
-      });
-  }*/
 })
 
 .controller('TimerCtrl', function($scope, Selection, Json, $stateParams, ngAudio, $interval, BackgroundCheck) {
@@ -270,24 +216,13 @@ angular.module('starter.controllers', [])
     }
     $scope.countdown = $scope.counter;
   }
-  /*document.addEventListener('deviceready', function() {
-    // Enable background mode
-    cordova.plugins.backgroundMode.setDefaults({
-      title:'OSU Canning App',
-      text:'Running...click to return'});
-    cordova.plugins.backgroundMode.enable();*/
-    //var backgroundStatus = cordova.plugins.backgroundMode.isActive();
-    /*cordova.plugins.backgroundMode.onactivate = function () {
-      cordova.plugins.backgroundMode.configure({
-                  text:' Click to return'
-              });
-    }*/
+  
     // start timer button clicked
     $scope.startTimer = function() {
       $scope.isRunning = true;
       // this is using the cordova plugin local notifications
           var now = new Date().getTime() + 5000;
-          reminder0 = new Date(now + $scope.countdown * 1000);
+          var reminder0 = new Date(now + $scope.countdown * 1000);
               
           cordova.plugins.notification.local.schedule({
             id: 1,
@@ -318,61 +253,8 @@ angular.module('starter.controllers', [])
           $scope.timerDone = true;
         }
       }, 1000);
-      /*
-      // listen for if the app goes to background or foreground
-      document.addEventListener("pause", onPause, false);
-      function onPause() {
-          // this is using the cordova plugin local notifications
-          var now = new Date().getTime();
-          reminder0 = new Date(now + $scope.countdown * 1000);
-              
-          cordova.plugins.notification.local.schedule({
-            id: 1,
-            title: "Canning timer is complete",
-            text: "Continue to next step",
-            sound: sound,
-            at: reminder0,
-          });
-      }
-      document.addEventListener("resume", onResume, false);
-      function onResume() {
-        cordova.plugins.notification.local.is[Scheduled|Triggered](1, function (present) {
-          cordova.plugins.notification.local.cancel(1, function() {
-          });
-        });
-      }*/
     }
-    /*$scope.$watch('countdown', function(countdown) {
-      if (countdown === 0) {
-        $scope.audio.play();
-        $interval.cancel(intervalId);
-        if ($scope.message != "All done!") {
-          $scope.timerDone = true;
-        }
-        cordova.plugins.backgroundMode.configure({
-          text:'Timer is done! Return to app'
-        });
-      }
-    })*/
-    /*$scope.onTimeout = function(){
-      $scope.counter--;
-      if ($scope.counter > 0) {
-        mytimeout = $timeout($scope.onTimeout,1000);
-      }
-      else {
-        $scope.audio.play();
-        $timeout.cancel(mytimeout);
-        if ($scope.message != "All done!") {
-          $scope.timerDone = true;
-        }
-        //playAudio('img/test.mp3')
-        //Native audio play
-          //$cordovaNativeAudio.play('alarm')
-            //.then(function(msg) {console.log(msg); })
-            //.catch(function(error) {console.error(error); });
-        //
-      }
-    }*/
+    
     // clicked reset button
     $scope.resetTimer = function() {
       //$timeout.cancel(mytimeout);
@@ -423,29 +305,5 @@ angular.module('starter.controllers', [])
         }
       });
     };
-  //}, false);
-  /*function playAudio(url) {
-    // Play the audio file at url
-    var my_media = new Media(url,
-        // success callback
-        function () {
-            console.log("playAudio():Audio Success");
-        },
-        // error callback
-        function (err) {
-            console.log("playAudio():Audio Error: " + err);
-        }
-    );
-    // Play audio
-    my_media.play();
-}*/
-// Called when background mode has been activated
-    /*cordova.plugins.backgroundMode.onactivate = function () {
-        setTimeout(function () {
-            // Modify the currently displayed notification
-            cordova.plugins.backgroundMode.configure({
-                text:$scope.countdown;
-            });
-        }, 1000);
-    }*/
+  
 });
