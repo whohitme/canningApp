@@ -5,7 +5,7 @@
     </ion-nav-buttons>
   <ion-content ng-class="{'alerting':timerDone, 'padding':!timerDone}">
     <h2>{{message}}</h2>
-    <div class="clock">{{countdown | minutesToDateTime | date:'HH:mm:ss'}}</div>
+    <h1>{{countdown | minutesToDateTime | date:'HH:mm:ss'}}</h1>
     <a class="button button-block button-balanced" ng-click="startTimer()" ng-show="!isRunning && !timerDone">Start Timer</a>
     <a class="button button-block button-assertive" ng-click="resetTimer()" ng-show="isRunning && !timerDone">Reset Timer</a>
     <a class="button button-block button-energized" ng-show="timerDone" ng-click="nextList()" href="#/{{myState}}">Next</a>

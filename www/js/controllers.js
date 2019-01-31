@@ -8,10 +8,13 @@ angular.module('starter.controllers', [])
 
 .controller('FoodsCtrl', function($scope, $stateParams, Selection, Json) {
   //$scope.itemType = $stateParams.type;
+  //var simpleData;
   $scope.customFilter = {};
   Json.get('canning.json').then(function(data) {
      $scope.foods = data.canning.simple;
+     //$scope.foods = _.sortBy($scope.foods, 'food');
   });
+  //$scope.foods = _.sortBy(simpleData, 'food');
   $scope.customFilter.type = $stateParams.type;
   Selection.add($stateParams.type,0);
 })
@@ -40,7 +43,7 @@ angular.module('starter.controllers', [])
       $scope.quart = true;
       $scope.halfGallon = true;
       break;
-    case 'seafood':
+    case 'halfPint':
       $scope.halfPint = true;
       $scope.pint = true;
   }
@@ -159,6 +162,13 @@ angular.module('starter.controllers', [])
   $scope.timerTitle = "Timer";
   var steps = $stateParams.steps;
   var intervalId;
+  var useSeconds = true;
+  var convertMin = 60;
+  if (useSeconds) {
+    convertMin = 1;
+  } else {
+    convertMin = 60;
+  }
   getTimerData();
   
   // ngAudio is currently working on ios and android
@@ -172,14 +182,14 @@ angular.module('starter.controllers', [])
       switch (steps) {
         case '1':
           $scope.message = "Start timing when water boils. Adjust heat to maintain boil for "+myNums[0]+" minutes.";
-          $scope.counter = $scope.counter = myNums[0]*60;
+          $scope.counter = myNums[0]*convertMin;
           $scope.myState = 'bchecklist2';
           $scope.submessage = "Reset timer if boiling stops."
           $scope.timerTitle = "Step 2: Process jars";
           break;
         case '2':
           $scope.message = "Leave jars in the canner for 5 minutes.";
-          $scope.counter = $scope.counter = 300;
+          $scope.counter = 5*convertMin;
           $scope.myState = 'bchecklist3';
           $scope.timerTitle = "Step 4: Wait";
           break;
@@ -192,20 +202,20 @@ angular.module('starter.controllers', [])
         switch (steps) {
         case '1':
           $scope.message = "Wait for a steady stream of steam. Let steam flow for 10 minutes.";
-          $scope.counter = $scope.counter = 600;
+          $scope.counter = 10*convertMin;
           $scope.myState = 'pchecklist2';
           $scope.timerTitle = "Step 2: Exhaust canner";
           break;
         case '2':
           $scope.message = "Adjust heat to keep pressure stable at "+$scope.myPressure+" PSI for "+myNums[0]+" minutes.";
           $scope.submessage = "Reset timer if pressure drops below recommended level";
-          $scope.counter = $scope.counter = myNums[0]*60;
+          $scope.counter = myNums[0]*convertMin;
           $scope.myState = 'pchecklist3';
           $scope.timerTitle = "Step 4: Start timing";
           break;
         case '3':
           $scope.message = "Leave jars in the canner for 10 minutes.";
-          $scope.counter = $scope.counter = 600;
+          $scope.counter = 10*convertMin;
           $scope.myState = 'pchecklist4';
           $scope.timerTitle = "Step 6: Wait";
           break;
@@ -261,7 +271,7 @@ angular.module('starter.controllers', [])
       $scope.countdown = $scope.counter;
       $interval.cancel(intervalId);
       $scope.isRunning = false;
-      cordova.plugins.notification.local.is[Scheduled|Triggered](1, function (present) {
+      cordova.plugins.notification.local.isPresent(1, function (present) {
           cordova.plugins.notification.local.cancel(1, function() {
               });
         });
@@ -275,7 +285,7 @@ angular.module('starter.controllers', [])
       $scope.audio.stop();
       $interval.cancel(intervalId);
       $scope.isRunning = false;
-      cordova.plugins.notification.local.is[Scheduled|Triggered](1, function (present) {
+      cordova.plugins.notification.local.isPresent(1, function (present) {
           cordova.plugins.notification.local.cancel(1, function() {
               });
         });
@@ -285,7 +295,7 @@ angular.module('starter.controllers', [])
     $scope.$on("$destroy",
       function(event) {
         $interval.cancel(intervalId);
-        cordova.plugins.notification.local.is[Scheduled|Triggered](1, function (present) {
+        cordova.plugins.notification.local.isPresent(1, function (present) {
           cordova.plugins.notification.local.cancel(1, function() {
               });
         });
@@ -298,7 +308,7 @@ angular.module('starter.controllers', [])
           $scope.audio.stop();
           $interval.cancel(intervalId);
           $scope.isRunning = false;
-          cordova.plugins.notification.local.is[Scheduled|Triggered](1, function (present) {
+          cordova.plugins.notification.local.isPresent(1, function (present) {
               cordova.plugins.notification.local.cancel(1, function() {
                   });
             });

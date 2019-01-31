@@ -6,7 +6,7 @@
   <ion-content>
     <h3 class="padding">Choose a food below:</h3>
     <ion-list>
-      <ion-item class="item-thumbnail-left item-text-wrap" ng-repeat="food in foods | filter:customFilter" type="item-text-wrap" href="#/jar/{{food.food}}">
+      <ion-item class="item-thumbnail-left item-text-wrap" ng-repeat="food in foods | orderBy:'food' | filter:customFilter" type="item-text-wrap" href="#/jar/{{food.food}}">
         <img ng-src="{{food.photo}}">
         <h2>{{food.food.toUpperCase()}}</h2>
         <h3><i>{{food.extra}}</i></h3>

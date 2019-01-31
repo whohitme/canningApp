@@ -69,7 +69,7 @@ angular.module('starter.services', [])
       return $http.get(item)
         .then(function(res){
           myJson = res.data;
-          return res.data;
+          return myJson;
         });
     },
     find: function(food,list) {
